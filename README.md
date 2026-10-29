@@ -89,9 +89,11 @@ Pressing `S` (or *Submit this moment*) first calls `POST /api/verify`:
    or after the budget runs out, the reasons appear in a banner and a second `S` within 5 s submits
    anyway. *Submit without check* is always available. `Space` and `Enter` never confirm a warning.
 
-The guard is a second opinion, not a gate, and the operator decides. Its error rates on correct and
-wrong moments have **not** been published yet: before majority voting, four live calls with the
-same input on one moment returned two warnings and two clean verdicts.
+The guard is a second opinion, not a gate, and the operator decides. On 40 test items over the
+AIC 2026 videos, fixed before the run (majority of three, a Gemini Flash model through a proxy, 30 s
+budget), it warned on 4 of 40 correct moments (10%) and on 26 of 39 moments of the right video at
+least 60 s away (67%) and 26 of 40 best-ranked wrong videos (65%); 5% of repeated calls disagreed.
+Those wrong moments are easier than real near misses, so the catch rates are upper bounds.
 
 ## DRES integration
 
