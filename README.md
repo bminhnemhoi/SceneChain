@@ -229,8 +229,14 @@ SceneChain is a research prototype prepared for VBS 2027, and we report it as su
 - **Index size.** Search is an exact float scan over a memory-mapped matrix. V3C at one keyframe
   per master shot (about 4.1 M rows) would need about 19 GB of RAM in float32, and int8 or IVF-PQ
   indexes are still to be measured.
-- **Chain ranking and the guard** have not been evaluated end to end (see above). Their
-  wrong-submission and time-to-correct effects are what we plan to measure at VBS 2027.
+- **Evidence so far comes from AIC data.** On the 58 two-scene items of the authors'
+  distribution-matched AIC test set, chain ranking (tool defaults, scene texts from the set) listed
+  the target moment among the first ten results for 50% of queries, against 14% for the whole
+  description as one query (paired difference +36 points, 95% bootstrap CI [+22, +50]) and 43% for
+  the second scene alone (CI of the difference [−9, +22]). Within the first 100 results the second
+  scene alone found the exact moment more often (71% vs. 59%), because at most three chains are
+  listed per video. Effects on wrong submissions and time to the first correct answer are what we
+  plan to measure at VBS 2027.
 - **Missing channels.** There is no speech (ASR) or on-screen-text (OCR) channel yet, and no
   object or colour filters.
 - **Hosted models.** Split, the guard, VQA and KIS-C call hosted models (Gemini, with an optional
