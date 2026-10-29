@@ -147,8 +147,10 @@ class OpenAIClient:
         model: str = OPENAI_MODEL,
         client: Any = None,
         timeout_s: float = REQUEST_TIMEOUT_S,
+        base_url: Optional[str] = None,
     ) -> None:
-        """``client`` injects an ``openai.OpenAI``-compatible object (used by tests)."""
+        """``client`` injects an ``openai.OpenAI``-compatible object (used by tests); ``base_url``
+        points the SDK at an OpenAI-compatible endpoint instead of OpenAI itself."""
         if client is None:
             if not api_key:
                 raise ValueError("an OpenAI API key is required")
@@ -156,7 +158,7 @@ class OpenAIClient:
                 raise LLMError("the openai package is not installed")
             from openai import OpenAI
 
-            client = OpenAI(api_key=api_key, timeout=timeout_s)
+            client = OpenAI(api_key=api_key, timeout=timeout_s, base_url=base_url)
         self._client = client
         self.model = model
 
@@ -204,8 +206,14 @@ def extract_json_object(text: str) -> dict:
     return obj
 
 
-def optional_openai(api_key: Optional[str]) -> Optional[OpenAIClient]:
-    """An :class:`OpenAIClient` when a key is set and the SDK is installed, else ``None``."""
+def optional_openai(
+    api_key: Optional[str], base_url: Optional[str] = None, model: Optional[str] = None
+) -> Optional[OpenAIClient]:
+    """An :class:`OpenAIClient` when a key is set and the SDK is installed, else ``None``.
+
+    ``base_url`` and ``model`` (``OPENAI_BASE_URL``, ``OPENAI_MODEL``) select an OpenAI-compatible
+    endpoint and its model; unset, OpenAI and :data:`OPENAI_MODEL` are used.
+    """
     if not api_key or not OpenAIClient.sdk_available():
         return None
-    return OpenAIClient(api_key)
+    return OpenAIClient(api_key, model=model or OPENAI_MODEL, base_url=base_url)

@@ -138,7 +138,7 @@ def default_providers() -> tuple[LLMClient, ...]:
     providers: list[LLMClient] = []
     if settings.gemini_key:
         providers.append(gemini_client(settings.gemini_key))
-    openai_client = optional_openai(settings.openai_key)
+    openai_client = optional_openai(settings.openai_key, settings.openai_base_url, settings.openai_model)
     if openai_client is not None:
         providers.append(openai_client)
     return tuple(providers)

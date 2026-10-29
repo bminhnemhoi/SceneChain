@@ -3,9 +3,9 @@
 **Scene-chained interactive video search with verified submissions.**
 
 SceneChain is an interactive known-item and question-answering video retrieval tool built for the
-[Video Browser Showdown](https://videobrowsershowdown.org/) (VBS) 2027. Textual task descriptions
-often narrate several shots in order, so SceneChain searches a description as an *ordered chain
-of scenes*. A language model proposes the split (or the operator writes it), each scene is
+[Video Browser Showdown](https://videobrowsershowdown.org/) (VBS) 2027. About a third of the textual task descriptions in the
+VBS archive narrate several shots in order, so SceneChain can search a description as an *ordered
+chain of scenes*. A language model proposes the split (or the operator writes it), each scene is
 embedded with SigLIP-2, and a dynamic program ranks temporally consistent chains inside each
 video. The video view draws one similarity curve per scene along the timeline. Every wrong
 submission costs points in VBS, so a *submission guard* asks a vision-language model for concrete
@@ -59,10 +59,13 @@ candidate videos at once.
 Long scene texts are split into chunks that fit the 64-token SigLIP-2 text window, and the chunk
 similarities are averaged, so a frame must match the whole description.
 
-**Status of the evidence.** Chain ranking is used to *group and present* candidates, not to
-replace frame ranking. As the paper says, its end-to-end benefit has not been measured yet: an
-earlier pairwise variant gave gains whose bootstrap intervals contained zero. What held up in our
-AIC 2026 measurements was retrieving each scene separately.
+**Status of the evidence.** On 58 two-scene test items over the AIC 2026 videos (scene texts
+from the test set, tool defaults, no operator), chains listed the target moment among the first
+ten results for 50% of queries, against 14% for the whole description as one query and 43% for
+the second scene alone, and put the correct video among the first ten videos for 88% against 69%.
+Under the same limit of three results per video, scene-2 retrieval matched chains within the
+first 100 results. Most of the gain comes from retrieving the answer's scene on its own; the chain
+adds mainly the right video. See the paper for confidence intervals and caveats.
 
 ## Submission guard
 
@@ -136,7 +139,7 @@ Extras:
 | *(core)* | server, search, DRES client, hosted-LLM features |
 | `models` | SigLIP-2 text and image towers (`torch`, `transformers`). For GPU encoding, install a CUDA build of torch from [pytorch.org](https://pytorch.org) first. |
 | `ingest` | keyframe extraction (`opencv-python-headless`, `scenedetect`) |
-| `openai` | optional OpenAI fallback for Split, the guard, VQA and KIS-C |
+| `openai` | optional OpenAI(-compatible) fallback for the guard and VQA |
 | `test`, `ui-test` | pytest, and Playwright for the headless-browser UI tests (`python -m playwright install chromium`) |
 
 The SigLIP-2 checkpoint (`google/siglip2-so400m-patch14-384`) is downloaded from Hugging Face on
@@ -188,7 +191,8 @@ file at the repository root, which is parsed but never copied into the environme
 | `DRES_URL`, `DRES_USER`, `DRES_PASSWORD` | DRES server and credentials. The stored credentials are sent only to `DRES_URL`. |
 | `DRES_COLLECTION` | collection name sent with answers (unset = not sent) |
 | `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) | hosted VLM for Split, the guard, VQA and KIS-C |
-| `OPENAI_API_KEY` | optional fallback (needs the `openai` extra) |
+| `OPENAI_API_KEY` | optional fallback for the guard and VQA (needs the `openai` extra) |
+| `OPENAI_BASE_URL`, `OPENAI_MODEL` | optional OpenAI-compatible endpoint and model for that fallback |
 
 Without a model key, every path degrades gracefully: Split and KIS-C fall back to rule-based
 splitting, the guard shows a warning banner, and VQA offers a manual answer field. Model replies

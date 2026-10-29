@@ -14,6 +14,8 @@ Recognised variables:
 ``DRES_COLLECTION``  collection name sent with DRES answers (default: not sent; set it only when the
                     organisers confirm the DRES collection name)
 ``GEMINI_API_KEY`` (or ``GOOGLE_API_KEY``), ``OPENAI_API_KEY``   LLM keys
+``OPENAI_BASE_URL``, ``OPENAI_MODEL``   optional OpenAI-compatible endpoint and model (default: OpenAI
+                    itself and :data:`scenechain.llm.OPENAI_MODEL`)
 
 Relative paths coming from the environment or ``.env`` are resolved against the repository root;
 paths passed as overrides are resolved against the current working directory. Secrets are excluded
@@ -48,6 +50,8 @@ class Settings:
     dres_collection: Optional[str] = None
     gemini_key: Optional[str] = field(default=None, repr=False)
     openai_key: Optional[str] = field(default=None, repr=False)
+    openai_base_url: Optional[str] = None
+    openai_model: Optional[str] = None
     log_dir: Path = DEFAULT_LOG_DIR
 
 
@@ -126,6 +130,8 @@ def load_settings(
         "dres_collection": pick("DRES_COLLECTION"),
         "gemini_key": pick("GEMINI_API_KEY", "GOOGLE_API_KEY"),
         "openai_key": pick("OPENAI_API_KEY"),
+        "openai_base_url": pick("OPENAI_BASE_URL"),
+        "openai_model": pick("OPENAI_MODEL"),
         "log_dir": repo_path(pick("VBS_LOG_DIR"), DEFAULT_LOG_DIR),
     }
     for name, value in overrides.items():

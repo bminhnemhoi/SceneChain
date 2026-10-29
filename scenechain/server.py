@@ -564,7 +564,7 @@ def create_app(
     verify_providers: Optional[list[LLMClient]] = list(vqa_providers) if vqa_providers is not None else None
     if llm is None or vqa_providers is None:
         gemini = GeminiClient(settings.gemini_key) if settings.gemini_key else None
-        openai_client = optional_openai(settings.openai_key)
+        openai_client = optional_openai(settings.openai_key, settings.openai_base_url, settings.openai_model)
         if llm is None:
             llm = gemini if gemini is not None else NullLLM()
         if vqa_providers is None:
