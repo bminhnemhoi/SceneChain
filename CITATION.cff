@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use SceneChain, please cite the paper below."
+title: "SceneChain"
+type: software
+license: MIT
+repository-code: "https://github.com/bminhnemhoi/SceneChain"
+authors:
+  - family-names: Ngo
+    given-names: Binh Minh
+    orcid: "https://orcid.org/0009-0002-4141-3867"
+    affiliation: "Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam"
+  - family-names: Le
+    given-names: Xuan Khanh
+    orcid: "https://orcid.org/0009-0002-7973-1027"
+    affiliation: "Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam"
+  - family-names: Ngo
+    given-names: Lam Tien
+    orcid: "https://orcid.org/0009-0008-2436-8623"
+    affiliation: "Faculty of Information Technology, Ton Duc Thang University, Ho Chi Minh City, Vietnam"
+preferred-citation:
+  type: conference-paper
+  title: "SceneChain: Scene-Chained Interactive Video Search with Verified Submissions"
+  authors:
+    - family-names: Ngo
+      given-names: Binh Minh
+      orcid: "https://orcid.org/0009-0002-4141-3867"
+    - family-names: Le
+      given-names: Xuan Khanh
+      orcid: "https://orcid.org/0009-0002-7973-1027"
+    - family-names: Ngo
+      given-names: Lam Tien
+      orcid: "https://orcid.org/0009-0008-2436-8623"
+  collection-title: "MultiMedia Modeling (MMM 2027)"
+  collection-type: proceedings
+  conference:
+    name: "MultiMedia Modeling (MMM 2027)"
+  notes: "Lecture Notes in Computer Science (LNCS). Pages and DOI not yet assigned."
+  publisher:
+    name: Springer
+  status: in-press
+  year: 2027

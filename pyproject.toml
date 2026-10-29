@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scenechain"
+version = "0.1.0"
+description = "SceneChain: scene-chained interactive video search with verified submissions (VBS 2027)"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Binh Minh Ngo" },
+  { name = "Xuan Khanh Le" },
+  { name = "Lam Tien Ngo" },
+]
+keywords = ["video retrieval", "known-item search", "Video Browser Showdown", "DRES", "SigLIP"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Multimedia :: Video",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+# Server, search, DRES client and the hosted-LLM features. No model weights are needed to import
+# the package or to run the test suite.
+dependencies = [
+  "numpy>=1.26",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pydantic>=2.6",
+  "requests>=2.31",
+  "pillow>=10.0",
+  "google-genai>=1.0",
+]
+
+[project.optional-dependencies]
+# SigLIP-2 text and image towers (search with real text queries, image encoding at ingest time).
+# Install a CUDA build of torch from https://pytorch.org for GPU encoding.
+models = ["torch>=2.2", "transformers>=4.49", "sentencepiece", "protobuf"]
+# Keyframe extraction from video files.
+ingest = ["opencv-python-headless>=4.8", "scenedetect>=0.6"]
+# Optional OpenAI fallback for split / guard / VQA / KIS-C.
+openai = ["openai>=1.30"]
+test = ["pytest>=8", "httpx>=0.27"]
+# Headless-browser regression tests of the web client (then run: python -m playwright install chromium).
+ui-test = ["playwright>=1.40"]
+
+[project.urls]
+Homepage = "https://github.com/bminhnemhoi/SceneChain"
+
+[project.scripts]
+scenechain-server = "scenechain.server:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["scenechain*"]
+
+[tool.setuptools.package-data]
+scenechain = ["web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
